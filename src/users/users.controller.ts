@@ -1,7 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AccessTokenGuard } from 'src/auth/authentication/guards/access-token/access-token.guard';
+import { SerializeInterceptor } from 'src/common/interceptors/serialize.interceptor';
+import { UserSerilaizeDto } from 'src/common/dto/user-serialize.dto';
 
 @Controller('users')
 export class UsersController {
@@ -13,6 +16,7 @@ export class UsersController {
   }
 
   @Get()
+  @UseInterceptors(new SerializeInterceptor(UserSerilaizeDto))
   findAll() {
     return this.usersService.findAll();
   }
