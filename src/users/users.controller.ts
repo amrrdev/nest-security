@@ -5,6 +5,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { AccessTokenGuard } from 'src/auth/authentication/guards/access-token/access-token.guard';
 import { SerializeInterceptor } from 'src/common/interceptors/serialize.interceptor';
 import { UserSerilaizeDto } from 'src/common/dto/user-serialize.dto';
+import { Auth } from 'src/auth/authentication/decorators/auth.decorator';
+import { AuthType } from 'src/auth/authentication/enums/auth-type.enum';
 
 @Controller('users')
 export class UsersController {
@@ -15,6 +17,7 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Auth(AuthType.NONE)
   @Get()
   @UseInterceptors(new SerializeInterceptor(UserSerilaizeDto))
   findAll() {
